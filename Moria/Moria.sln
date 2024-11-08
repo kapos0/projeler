@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34202.233
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Moria", "Moria\Moria.csproj", "{8F980B93-D1FC-428A-846B-0E386D58E729}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8F980B93-D1FC-428A-846B-0E386D58E729}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F980B93-D1FC-428A-846B-0E386D58E729}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F980B93-D1FC-428A-846B-0E386D58E729}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F980B93-D1FC-428A-846B-0E386D58E729}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3BB189E5-D1CF-479B-BE88-4E9C38AE80A9}
+	EndGlobalSection
+EndGlobal
