@@ -1,0 +1,10 @@
+.env example
+
+```
+MONGODB_URI=
+PUBLIC_URL=
+SMTP_HOST=
+SMTP_USER=
+SMTP_PASS=
+MAIL_TO=
+```
