@@ -25,7 +25,7 @@ export default function EditTicketForm({ ticket }: { ticket: TicketType }) {
   }
 
   const [formData, setFormData] = useState(startingTicketData);
-  const [selectedEmail, setSelectedEmail] = useState("dalinnx1@gmail.com");
+  const [selectedEmail, setSelectedEmail] = useState("eden.turhann@gmail.com");
 
   function handleChange(
     e: React.ChangeEvent<
@@ -162,8 +162,8 @@ export default function EditTicketForm({ ticket }: { ticket: TicketType }) {
             type="radio"
             id="mudur"
             name="email"
-            value="dalinnx1@gmail.com"
-            checked={selectedEmail === "dalinnx1@gmail.com"}
+            value="eden.turhann@gmail.com"
+            checked={selectedEmail === "eden.turhann@gmail.com"}
             onChange={handleEmailChange}
           />
           <label htmlFor="mudur">Müdüre</label>
@@ -171,8 +171,8 @@ export default function EditTicketForm({ ticket }: { ticket: TicketType }) {
             type="radio"
             id="tekniker"
             name="email"
-            value="dalinnx1@gmail.com"
-            checked={selectedEmail === "dalinnx1@gmail.com"}
+            value="eden.turhann@gmail.com"
+            checked={selectedEmail === "eden.turhann@gmail.com"}
             onChange={handleEmailChange}
           />
           <label htmlFor="tekniker">Teknikere</label>
