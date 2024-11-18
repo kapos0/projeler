@@ -25,6 +25,7 @@ export default function EditTicketForm({ ticket }: { ticket: TicketType }) {
   }
 
   const [formData, setFormData] = useState(startingTicketData);
+  const [selectedEmail, setSelectedEmail] = useState("dalinnx1@gmail.com");
 
   function handleChange(
     e: React.ChangeEvent<
@@ -40,6 +41,11 @@ export default function EditTicketForm({ ticket }: { ticket: TicketType }) {
     }));
   }
 
+  function handleEmailChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setSelectedEmail(e.target.value);
+  }
+
+  const bodyData = { formData, email: selectedEmail };
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
@@ -49,7 +55,7 @@ export default function EditTicketForm({ ticket }: { ticket: TicketType }) {
         headers: {
           "Content-type": "application/json",
         },
-        body: JSON.stringify({ formData }),
+        body: JSON.stringify(bodyData),
       });
       if (!res.ok) {
         throw new Error("Failed to update ticket");
@@ -60,7 +66,7 @@ export default function EditTicketForm({ ticket }: { ticket: TicketType }) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ formData }),
+        body: JSON.stringify(bodyData),
       });
       if (!res.ok) {
         throw new Error("Failed to create ticket");
@@ -120,51 +126,19 @@ export default function EditTicketForm({ ticket }: { ticket: TicketType }) {
 
         <label>Aciliyet derecesi</label>
         <div>
-          <input
-            id="priority-1"
-            name="priority"
-            type="radio"
-            onChange={handleChange}
-            value={1}
-            checked={formData.priority == 1}
-          />
-          <label>1</label>
-          <input
-            id="priority-2"
-            name="priority"
-            type="radio"
-            onChange={handleChange}
-            value={2}
-            checked={formData.priority == 2}
-          />
-          <label>2</label>
-          <input
-            id="priority-3"
-            name="priority"
-            type="radio"
-            onChange={handleChange}
-            value={3}
-            checked={formData.priority == 3}
-          />
-          <label>3</label>
-          <input
-            id="priority-4"
-            name="priority"
-            type="radio"
-            onChange={handleChange}
-            value={4}
-            checked={formData.priority == 4}
-          />
-          <label>4</label>
-          <input
-            id="priority-5"
-            name="priority"
-            type="radio"
-            onChange={handleChange}
-            value={5}
-            checked={formData.priority == 5}
-          />
-          <label>5</label>
+          {[1, 2, 3, 4, 5].map((priority) => (
+            <span key={priority}>
+              <input
+                id={`priority-${priority}`}
+                name="priority"
+                type="radio"
+                onChange={handleChange}
+                value={priority}
+                checked={formData.priority == priority}
+              />
+              <label>{priority}</label>
+            </span>
+          ))}
         </div>
         <label>İlerleme</label>
         <input
@@ -182,6 +156,27 @@ export default function EditTicketForm({ ticket }: { ticket: TicketType }) {
           <option value="Başlandı">Başlandı</option>
           <option value="Bitti">Bitti</option>
         </select>
+        <label>Sorumlu Kişi Seçimi</label>
+        <div>
+          <input
+            type="radio"
+            id="mudur"
+            name="email"
+            value="dalinnx1@gmail.com"
+            checked={selectedEmail === "dalinnx1@gmail.com"}
+            onChange={handleEmailChange}
+          />
+          <label htmlFor="mudur">Müdüre</label>
+          <input
+            type="radio"
+            id="tekniker"
+            name="email"
+            value="dalinnx1@gmail.com"
+            checked={selectedEmail === "dalinnx1@gmail.com"}
+            onChange={handleEmailChange}
+          />
+          <label htmlFor="tekniker">Teknikere</label>
+        </div>
         <input
           type="submit"
           className="btn max-w-xs"
