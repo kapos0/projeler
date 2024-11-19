@@ -21,7 +21,7 @@ export async function PUT(request: Request, { params }: { params: Params }) {
     await Ticket.findByIdAndUpdate(id, {
       ...ticketData,
     });
-    sendEmail(
+    await sendEmail(
       ticketData.title,
       ticketData.description,
       body.email || process.env.MAIL_TO
