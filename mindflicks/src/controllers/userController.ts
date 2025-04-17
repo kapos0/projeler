@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
-import { connectDB } from "@/lib/conntectDB";
+import { connectDB } from "@/lib/connectDB";
 import User from "@/models/user";
 import { auth, signIn } from "@/auth";
 import { CredentialsSignin } from "next-auth";

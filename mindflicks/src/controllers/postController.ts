@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { fetchUser } from "./userController";
 import Post from "@/models/post";
 import User from "@/models/user";
-import { connectDB } from "@/lib/conntectDB";
+import { connectDB } from "@/lib/connectDB";
 
 export async function createUserPost(content: string, image: string) {
     try {

@@ -1,10 +1,45 @@
 import NextAuth, { CredentialsSignin } from "next-auth";
 import { connectDB } from "@/lib/connectDB";
-import User from "@/models/user";
+import User from "@/models/UserModel";
 import Credentials from "next-auth/providers/credentials";
 import { compare } from "bcryptjs";
 import Google from "next-auth/providers/google";
-import Github from "next-auth/providers/github";
+
+import "next-auth";
+
+declare module "next-auth" {
+    interface User {
+        id?: string;
+        username?: string;
+        role?: string;
+        isVerified?: boolean;
+        avatar?: string;
+        provider?: string;
+    }
+
+    interface Session {
+        user: {
+            id?: string;
+            username?: string;
+            email?: string;
+            role?: string;
+            isVerified?: boolean;
+            avatar?: string;
+            provider?: string;
+        };
+    }
+}
+
+declare module "next-auth" {
+    interface JWT {
+        id?: string;
+        username?: string;
+        role?: string;
+        isVerified?: boolean;
+        avatar?: string;
+        provider?: string;
+    }
+}
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [
@@ -28,7 +63,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 },
                 provider: {
                     type: "hidden",
-                    accept: "credentials, google, github",
+                    accept: "credentials, google",
+                },
+                avatar: {
+                    type: "text",
                 },
                 role: {
                     type: "hidden",
@@ -47,7 +85,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 const user = await User.findOne({
                     username,
                     provider: "credentials",
-                });
+                }).select("+password +role");
 
                 if (!user || !user.password)
                     throw new Error("Invalid username or password");
@@ -55,11 +93,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 const isMatched = await compare(password, user?.password);
 
                 if (!isMatched) throw new Error("Password did not matched");
-                return user;
+
+                const userData = {
+                    username: user?.username,
+                    email: user?.email,
+                    role: user?.role,
+                    id: user?._id,
+                    isVerified: user?.isVerified,
+                    avatar: user?.avatar,
+                    provider: user?.provider,
+                };
+                return userData;
             },
         }),
         Google,
-        Github,
     ],
     pages: {
         signIn: "/sign-in",
@@ -69,30 +116,45 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         //when user sign in with google or github it needs to be saved in the database
         async signIn({ user, account }) {
             await connectDB();
-            if (
-                account?.provider === "google" ||
-                account?.provider === "github"
-            ) {
+            if (account?.provider === "google") {
                 const existingUser = await User.findOne({ email: user?.email });
                 if (!existingUser) {
                     const newUser = new User({
                         email: user?.email,
                         username: user?.name,
                         provider: account?.provider,
-                        image: user?.image,
-                        website: "",
-                        bio: "",
-                        location: "",
-                        posts: [],
-                        notifications: [],
-                        followers: [],
-                        following: [],
+                        avatar: user?.image,
                         isVerified: true,
                     });
                     await newUser.save();
                 }
             }
             return true;
+        },
+        async session({ session, token }) {
+            session.user = {
+                ...session.user,
+                id: token.id as string,
+                username: token.username as string,
+                email: token.email as string,
+                role: token.role as string,
+                isVerified: token.isVerified as boolean,
+                avatar: token.avatar as string,
+                provider: token.provider as string,
+            };
+            return session;
+        },
+        async jwt({ token, user }) {
+            if (user) {
+                token.id = user.id as string;
+                token.username = user.username ?? "";
+                token.email = user.email ?? "";
+                token.role = user.role ?? "user";
+                token.isVerified = user.isVerified ?? false;
+                token.avatar = user.avatar ?? "";
+                token.provider = user.provider ?? "credentials";
+            }
+            return token;
         },
     },
 });
