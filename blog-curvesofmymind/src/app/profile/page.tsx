@@ -119,13 +119,15 @@ export default function ProfilePage() {
                             placeholder="Username"
                             className="bg-white dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
                         />
-                        <Input
-                            type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            placeholder="Email"
-                            className="bg-white dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
-                        />
+                        {data?.user.provider !== "google" && (
+                            <Input
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="Email"
+                                className="bg-white dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
+                            />
+                        )}
                         <Input
                             type="password"
                             value={password}
