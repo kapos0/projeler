@@ -10,7 +10,6 @@ import { User, LogOut } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { signOut, useSession } from "next-auth/react";
 import { deleteUser, updateUser } from "@/actions/UserAction";
-import { redirect } from "next/navigation";
 import ImageUpload from "@/components/ImageUpload";
 
 export default function ProfilePage() {
@@ -20,7 +19,7 @@ export default function ProfilePage() {
     const [password, setPassword] = useState("");
     const [showAlert, setShowAlert] = useState(false);
     const [imageUrl, setImageUrl] = useState("");
-
+    console.log(username);
     async function handleProfileDelete() {
         try {
             await deleteUser(data?.user.id ?? "");
@@ -33,11 +32,7 @@ export default function ProfilePage() {
 
     async function handleUpdate(e: React.FormEvent) {
         e.preventDefault();
-        if (
-            username === data?.user?.username &&
-            email === data?.user.email &&
-            !password
-        ) {
+        if (username === data?.user?.username && email === data?.user?.email) {
             setShowAlert(true);
             return;
         }
@@ -54,8 +49,6 @@ export default function ProfilePage() {
             console.error("Failed to update profile:", error);
         }
     }
-
-    if (!data?.user.username) return redirect("/sign-in");
 
     return (
         <div className="flex flex-col md:flex-row min-h-screen">
@@ -120,22 +113,25 @@ export default function ProfilePage() {
                             className="bg-white dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
                         />
                         {data?.user.provider !== "google" && (
-                            <Input
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                placeholder="Email"
-                                className="bg-white dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
-                            />
+                            <>
+                                <Input
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    placeholder="Email"
+                                    className="bg-white dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
+                                />
+                                <Input
+                                    type="password"
+                                    value={password}
+                                    onChange={(e) =>
+                                        setPassword(e.target.value)
+                                    }
+                                    placeholder="Password"
+                                    className="bg-white dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
+                                />
+                            </>
                         )}
-                        <Input
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            placeholder="Password"
-                            className="bg-white dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
-                        />
-
                         <Button
                             type="submit"
                             className="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 dark:bg-gray-200 dark:hover:bg-gray-300 dark:text-gray-800"

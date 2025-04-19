@@ -123,10 +123,23 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                         email: user?.email,
                         username: user?.name,
                         provider: account?.provider,
-                        avatar: user?.image,
+                        avatar: user?.image, // Google'dan gelen image alanını avatar olarak kaydediyoruz
                         isVerified: true,
                     });
-                    await newUser.save();
+                    const savedUser = await newUser.save();
+                    user.id = savedUser._id.toString();
+                    user.username = savedUser.username;
+                    user.role = savedUser.role;
+                    user.isVerified = savedUser.isVerified;
+                    user.avatar = savedUser.avatar;
+                    user.provider = savedUser.provider;
+                } else {
+                    user.id = existingUser._id.toString();
+                    user.username = existingUser.username;
+                    user.role = existingUser.role;
+                    user.isVerified = existingUser.isVerified;
+                    user.avatar = existingUser.avatar || user.image;
+                    user.provider = existingUser.provider;
                 }
             }
             return true;
