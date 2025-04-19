@@ -19,7 +19,6 @@ export default function ProfilePage() {
     const [password, setPassword] = useState("");
     const [showAlert, setShowAlert] = useState(false);
     const [imageUrl, setImageUrl] = useState("");
-    console.log(username);
     async function handleProfileDelete() {
         try {
             await deleteUser(data?.user.id ?? "");
