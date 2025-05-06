@@ -13,21 +13,20 @@ type NotesState = {
     updateNoteTitle: (newTitle: string) => Promise<void>;
 };
 
+export async function initializeNotes() {
+    const notes = await window.context.getNotes();
+    if (!notes) return;
+    const assignIdToNotes = notes.map((note: NoteInfo) => {
+        return { ...note };
+    });
+    const sortedNotes = assignIdToNotes.sort(
+        (a: NoteInfo, b: NoteInfo) => b.lastEditTime - a.lastEditTime
+    );
+    return sortedNotes;
+}
+
 export const useNotesStore = create<NotesState>((set, get) => {
-    async function initializeNotes() {
-        const notes = await window.context.getNotes();
-        if (!notes) return;
-        const assignIdToNotes = notes.map((note: NoteInfo) => {
-            return { ...note };
-        });
-        const sortedNotes = assignIdToNotes.sort(
-            (a: NoteInfo, b: NoteInfo) => b.lastEditTime - a.lastEditTime
-        );
-        set({ notes: sortedNotes });
-    }
-
-    initializeNotes();
-
+    initializeNotes().then((notes) => set({ notes: notes ?? [] }));
     return {
         notes: [],
         selectedNoteId: null,
