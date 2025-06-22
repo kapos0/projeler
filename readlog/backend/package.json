@@ -1,0 +1,23 @@
+{
+    "name": "readlog-backend",
+    "version": "1.0.0",
+    "description": "An application written to keep a list of previously read books",
+    "main": "server.js",
+    "type": "module",
+    "scripts": {
+        "start": "node server.js",
+        "dev": "node --watch server.js"
+    },
+    "keywords": [
+        "mongodb",
+        "express"
+    ],
+    "author": "Mehmet Enes Turhan",
+    "license": "MIT",
+    "dependencies": {
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.5",
+        "express": "^4.21.1",
+        "mongoose": "^8.8.2"
+    }
+}

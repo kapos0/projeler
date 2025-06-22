@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+    frontend:
+        depends_on:
+            - backend
+        build: ./frontend
+        ports:
+            - 5173:5173
+        environment:
+            VITE_BASE_URL: http://localhost:8000/api/books
+        volumes:
+            - ./frontend:/app
+            - /app/node_modules
+
+    backend:
+        depends_on:
+            - db
+        build: ./backend
+        ports:
+            - 8000:8000
+        environment:
+            PORT: 8000
+            mongoDBURI_LOCAL: mongodb://db:27017/readLogAppDB
+        volumes:
+            - ./backend:/app
+            - /app/node_modules
+
+    db:
+        image: mongo:latest
+        ports:
+            - 27017:27017
+        environment:
+            MONGO_INITDB_DATABASE: readLogAppDB
+        volumes:
+            - mongo-data:/data/db
+
+volumes:
+    mongo-data:
