@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "Lezizo",
+    "slug": "lezizo",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "scheme": "lezizo",
+    "web": {
+      "bundler": "metro",
+      "output": "single"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#F4F1EA"
+      }
+    },
+    "plugins": [
+      "expo-font"
+    ]
+  }
+}
