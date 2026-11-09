@@ -6,6 +6,13 @@
     "orientation": "portrait",
     "userInterfaceStyle": "light",
     "scheme": "lezizo",
+    "androidStatusBar": {
+      "hidden": true,
+      "translucent": true
+    },
+    "androidNavigationBar": {
+      "visible": false
+    },
     "web": {
       "bundler": "metro",
       "output": "single"

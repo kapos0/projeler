@@ -1,18 +1,25 @@
 import { X } from "lucide-react";
+import { useState } from "react";
 import { authClient } from "../../lib/auth-client";
 export default function AuthModal({
-  mode,
+  mode: initialMode = "signIn",
   onMode,
   onClose,
   error,
   onError,
 }: {
-  mode: "signIn" | "signUp";
-  onMode: () => void;
+  mode?: "signIn" | "signUp";
+  onMode?: () => void;
   onClose: () => void;
   error: string;
   onError: (v: string) => void;
 }) {
+  const [mode, setMode] = useState(initialMode);
+  const toggleMode = () => {
+    setMode((current) => (current === "signIn" ? "signUp" : "signIn"));
+    onMode?.();
+    onError("");
+  };
   return (
     <div className="modal-backdrop" onClick={onClose}>
       <div className="modal auth-modal" onClick={(e) => e.stopPropagation()}>
@@ -20,12 +27,8 @@ export default function AuthModal({
           <X size={18} />
         </button>
         <span className="eyebrow">Lezizo topluluğu</span>
-        <h2>{mode === "signUp" ? "Mutfağına katıl" : "Tekrar hoş geldin"}</h2>
-        <p>
-          {mode === "signUp"
-            ? "Favorilerini ve menünü hesabında sakla."
-            : "Tariflerine kaldığın yerden devam et."}
-        </p>
+        <h2>Tekrar hoş geldin</h2>
+        <p>Tariflerine kaldığın yerden devam et.</p>
         <form
           onSubmit={async (e) => {
             e.preventDefault();
@@ -50,7 +53,7 @@ export default function AuthModal({
           {mode === "signUp" && (
             <label>
               Ad soyad
-              <input name="name" required placeholder="Ayşe Yılmaz" />
+              <input name="name" required placeholder="Adın soyadın" />
             </label>
           )}
           <label>
@@ -77,7 +80,7 @@ export default function AuthModal({
             {mode === "signUp" ? "Kayıt ol" : "Giriş yap"}
           </button>
         </form>
-        <button className="auth-switch" onClick={onMode}>
+        <button className="auth-switch" onClick={toggleMode}>
           {mode === "signUp"
             ? "Zaten hesabın var mı? Giriş yap"
             : "Hesabın yok mu? Kayıt ol"}
